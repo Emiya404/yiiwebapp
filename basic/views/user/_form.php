@@ -20,11 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'accessToken')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'phone_number')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'user_status')->dropDownList([ 'on' => 'On', 'off' => 'Off', 'forbidden' => 'Forbidden', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'user_type')->dropDownList([ 'normal' => 'Normal', 'admin' => 'Admin', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'user_type')->dropDownList([ 'admin' => 'Admin', 'guest' => 'Guest', ], ['prompt' => '']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -6,14 +6,14 @@ $this->title="Blogs"
 <div class="container">
 	<div class="row">        
 <?php foreach ($blogposts as $blogpost):
-$display_str=substr($blogpost->content,0,101);
+$display_str=substr($blogpost->post_text,0,101);
 $passage_addr="/index.php/?r=site/passage&blog_id="."$blogpost->post_id";?>
 <div class="col-lg-6">
 <div class="card flex-md-row mb-4 box-shadow h-xl-300">
     <div class="card-body d-flex flex-column align-items-start">
         <strong class="d-inline-block mb-2 text-purple">News</strong>
         <h3 class="mb-0">
-        <a class="text-dark" href="#"><?= Html::encode("{$blogpost->title}") ?></a>
+        <a class="text-dark" href="#"><?= Html::encode("{$blogpost->post_title}") ?></a>
         </h3>
         <div class="mb-1 text-muted">
             Nov 12

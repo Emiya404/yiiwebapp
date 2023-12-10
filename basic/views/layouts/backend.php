@@ -171,7 +171,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="index.php?r=blogpost" >
+                  <a class="nav-link" href="index.php?r=post" >
                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-article" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -187,7 +187,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="index.php?r=comments" >
+                  <a class="nav-link" href="index.php?r=comment" >
                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -236,33 +236,38 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
               <div class="d-none d-lg-block col-lg-3">
                 <ul class="nav nav-pills nav-vertical">
                   <li class="nav-item">
-                    <a href="/index.php?r=blogpost%2Fcreate" class="nav-link">
-                      添加文章
+                    <a href="/index.php?r=category" class="nav-link">
+                      文章类别管理
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="/index.php?r=user%2Fcreate" class="nav-link">
-                      添加用户
+                    <a href="/index.php?r=region" class="nav-link">
+                      国家/地区信息
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="/index.php?r=comments%2Fcreate" class="nav-link">
-                      添加评论
+                    <a href="/index.php?r=pollution" class="nav-link">
+                      动态地图-污染消息记录
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="/index.php?r=user" class="nav-link">
-                      用户一览
+                    <a href="/index.php?r=message" class="nav-link">
+                      私信管理
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="/index.php?r=blogpost" class="nav-link">
-                      文章一览
+                    <a href="/index.php?r=likes" class="nav-link">
+                      点赞管理
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="/index.php?r=comments" class="nav-link">
-                      评论一览
+                    <a href="/index.php?r=bookmark" class="nav-link">
+                      收藏夹管理
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/index.php?r=markrecord" class="nav-link">
+                      收藏夹管理
                     </a>
                   </li>
                 </ul>

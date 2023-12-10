@@ -4,8 +4,6 @@ namespace app\models;
 
 use Yii;
 
-use function PHPUnit\Framework\isEmpty;
-
 /**
  * This is the model class for table "user".
  *
@@ -14,13 +12,12 @@ use function PHPUnit\Framework\isEmpty;
  * @property string $password
  * @property string $authKey
  * @property string $accessToken
- * @property string|null $phone_number
- * @property string $user_status
  * @property string $user_type
  *
- * @property BlogPost[] $blogPosts
+ * @property Bookmark[] $bookmarks
  */
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+{
     /**
      * {@inheritdoc}
      */
@@ -35,10 +32,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
     public function rules()
     {
         return [
-            [['username', 'password', 'authKey', 'accessToken', 'user_status', 'user_type'], 'required'],
-            [['user_status', 'user_type'], 'string'],
+            [['username', 'password', 'authKey', 'accessToken', 'user_type'], 'required'],
+            [['user_type'], 'string'],
             [['username', 'password', 'authKey', 'accessToken'], 'string', 'max' => 255],
-            [['phone_number'], 'string', 'max' => 15],
         ];
     }
 
@@ -53,24 +49,21 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface{
             'password' => 'Password',
             'authKey' => 'Auth Key',
             'accessToken' => 'Access Token',
-            'phone_number' => 'Phone Number',
-            'user_status' => 'User Status',
             'user_type' => 'User Type',
         ];
     }
 
     /**
-     * Gets query for [[BlogPosts]].
+     * Gets query for [[Bookmarks]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBlogPosts()
+    public function getBookmarks()
     {
-        return $this->hasMany(BlogPost::class, ['author_id' => 'user_id']);
+        return $this->hasMany(Bookmark::class, ['mark_user' => 'user_id']);
     }
 
-
-    /**
+     /**
      * {@inheritdoc}
      */
     public static function findIdentity($id){

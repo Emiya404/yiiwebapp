@@ -1,0 +1,75 @@
+CREATE TABLE User (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    authKey VARCHAR(255) NOT NULL,
+    accessToken VARCHAR(255) NOT NULL,
+    user_type ENUM('admin', 'guest') NOT NULL
+);
+
+CREATE TABLE Category (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Post (
+    post_id INT PRIMARY KEY AUTO_INCREMENT,
+    post_author INT,
+    post_title VARCHAR(255) NOT NULL,
+    post_type INT,
+    post_text TEXT,
+    post_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    post_image VARCHAR(255)
+);
+
+CREATE TABLE Region (
+    region_id INT PRIMARY KEY AUTO_INCREMENT,
+    region_code VARCHAR(10) NOT NULL,
+    region_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Pollution (
+    pollution_id INT PRIMARY KEY AUTO_INCREMENT,
+    pollution_type ENUM('1', '2', '3', '4', '5', '6', '7', '8', '9', '10') NOT NULL,
+    pollution_src INT NOT NULL,
+    pollution_date TIMESTAMP,
+    region_id INT,
+    FOREIGN KEY (region_id) REFERENCES Region(region_id)
+);
+
+CREATE TABLE Message (
+    msg_id INT PRIMARY KEY AUTO_INCREMENT,
+    send_uid INT,
+    recv_uid INT,
+    msg_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    msg_read BOOLEAN,
+    msg_text TEXT
+);
+
+CREATE TABLE Comment (
+    comment_id INT PRIMARY KEY AUTO_INCREMENT,
+    comment_post INT,
+    comment_user INT,
+    comment_text TEXT,
+    comment_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Likes (
+    like_post INT,
+    like_user INT,
+    like_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (like_post, like_user)
+);
+
+CREATE TABLE Bookmark (
+    mark_id INT PRIMARY KEY AUTO_INCREMENT,
+    mark_name VARCHAR(255) NOT NULL,
+    mark_user INT,
+    FOREIGN KEY (mark_user) REFERENCES User(user_id)
+);
+
+CREATE TABLE Markrecord (
+    mark_id INT,
+    post_id INT,
+    PRIMARY KEY (mark_id, post_id)
+);

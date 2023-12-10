@@ -10,8 +10,9 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\Blogpost;
-use app\models\Comments;
+use app\models\Post;
+use app\models\User;
+use app\models\Comment;
 
 class SiteController extends Controller
 {
@@ -65,8 +66,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $this->layout="frontend";
-        $comments = Comments::find()->all();
-        $model=new Comments();
+        $comment = Comment::find()->all();
+        $model=new Comment();
 
         if(Yii::$app->request->isPost){
             if(Yii::$app->user->isGuest){
@@ -75,20 +76,20 @@ class SiteController extends Controller
             }
             
             if($model->load(Yii::$app->request->post())){
-            $model->user_id=Yii::$app->user->identity->user_id;
-            $model->creation_date=date('Y-m-d H:i:s');
+            $model->comment_user=Yii::$app->user->identity->user_id;
+            $model->comment_time=date('Y-m-d H:i:s');
                 if($model->save()){
                     return $this->redirect(['site/index']);
                 }else{
-                    Yii::$app->session->setFlash('error', '保存数据失败！');
+                    Yii::$app->session->setFlash('error', '发送评论保存数据失败！');
                     return $this->refresh();
                 }
             }
         }
 
         return $this->render('index', [
-            'comments' => $comments,
-            'model' => $model     
+            'comments' => $comment,
+            'model' => $model
         ]);
     }
 
@@ -155,13 +156,12 @@ class SiteController extends Controller
     }
 
     public function actionSay($message='Hello'){
-        //render(VIEW FILE.CONTENT)
         return $this->render('say',['message'=>$message]);
     }
 
     public function actionBlog(){
         $this->layout="frontend";
-        $blogposts = Blogpost::find()->all();
+        $blogposts = Post::find()->all();
         return $this->render('blog', [
             'blogposts' => $blogposts,     
         ]);
@@ -169,10 +169,42 @@ class SiteController extends Controller
 
     public function actionPassage(){
         $this->layout="frontend";
+        //load the passage from db and find its author
         $post_id=Yii::$app->request->get("blog_id");
-        $blogpost = Blogpost::findAll(["post_id"=>$post_id]);
+        $blogpost = Post::findOne(["post_id"=>$post_id]);
+        if($blogpost==null){
+            return $this->goHome();
+        }
+        $author=$blogpost->post_author;
+        $user=User::findOne(["user_id"=>$author]);
+        if($user==null){
+            return $this->goHome();
+        }
+
+        //alloc a new comment objection used sending comment
+        $comment= new Comment();
+        if($this->request->isPost){
+            if($comment->load($this->request->post())){
+                $comment->comment_user=Yii::$app->user->identity->user_id;
+                $comment->comment_post=$post_id;
+                $comment->comment_time=date('Y-m-d H:i:s');
+                if($comment->save()){
+                    //reload the comments
+                    return $this->refresh();
+                }else{
+                    Yii::$app->session->setFlash('error', '发送评论失败！');
+                    return $this->refresh();
+                }
+            }
+        }
+
+        $old_comments=Comment::findAll(['comment_post'=>$post_id]);
+        //load old comments for diplaying the comments
         return $this->render('passage', [
-            'blogpost' => $blogpost,     
+            'blogpost' => $blogpost,
+            'author'=>$user  , 
+            'comment'=>$comment ,
+            'old_comments'=>$old_comments,
         ]);
     }
 }

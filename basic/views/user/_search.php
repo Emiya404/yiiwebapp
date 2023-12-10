@@ -25,10 +25,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'accessToken') ?>
 
-    <?php // echo $form->field($model, 'phone_number') ?>
-
-    <?php // echo $form->field($model, 'user_status') ?>
-
     <?php // echo $form->field($model, 'user_type') ?>
 
     <div class="form-group">

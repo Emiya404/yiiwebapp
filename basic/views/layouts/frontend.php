@@ -86,7 +86,7 @@ NAVBAR (remove topnav if you don't want changed nav background on scroll)
 				if(Yii::$app->user->isGuest){
 					echo '<li class="nav-item">'. Html::beginForm(['/site/login']). Html::submitButton('Login',['class' => 'nav-link btn btn-link logout']). Html::endForm().'</li>';
 				}else{
-					echo '<li class="nav-item">'. Html::beginForm(['/site/logout']). Html::submitButton(' ' . Yii::$app->user->identity->username . '的个人中心',['class' => 'nav-link btn btn-link logout']). Html::endForm(). '</li>';
+					echo '<li class="nav-item">'. Html::beginForm(['/userspace/index']). Html::submitButton(' ' . Yii::$app->user->identity->username . '的个人中心',['class' => 'nav-link btn btn-link logout']). Html::endForm(). '</li>';
 				}
 			?>
 			</a>
