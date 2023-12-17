@@ -1,7 +1,4 @@
 <?php
-
-use app\models\Message;
-
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\grid\GridView;
