@@ -73,3 +73,10 @@ CREATE TABLE Markrecord (
     post_id INT,
     PRIMARY KEY (mark_id, post_id)
 );
+
+CREATE TABLE Suggestion(
+    suggestion_id INT PRIMARY KEY AUTO_INCREMENT,
+    suggestion_user INT,
+    suggestion_text TEXT,
+    suggestion_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

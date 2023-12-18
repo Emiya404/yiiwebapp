@@ -58,22 +58,26 @@ NAVBAR (remove topnav if you don't want changed nav background on scroll)
 	<div class="navbar-collapse collapse" id="navbarColor02" style="">
 		<ul class="navbar-nav mr-auto d-flex align-items-center">
 			<li class="nav-item">
-			<a class="nav-link" href="./index.html">Intro</a>
+				<a class="nav-link" href="./index.html">团队介绍</a>
 			</li>
-			<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Examples </a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="index.php?r=site/blog">Blog Index</a>
-				<?php
-					if(Yii::$app->user->isGuest){
-						echo '<a class="dropdown-item" href="index.php?r=site/login">User Login</a>';
-					}else{
-						echo '<li class="nav-item">'. Html::beginForm(['/site/logout']). Html::submitButton('Logout (' . Yii::$app->user->identity->username . ')',['class' => 'nav-link btn btn-link logout']). Html::endForm(). '</li>';
-					}
-				?>
-			</div>
+			<li class="nav-item">
+				<a class="nav-link" href="?r=site/suggestion">留言</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="?r=site/blog">博客</a>
+			</li>
+		
+					<?php
+						if(Yii::$app->user->isGuest){
+							echo '<li class="nav-item"> <a class="nav-link" href="index.php?r=site/login">用户登录</a> </li>';
+						}else{
+							echo '<li class="nav-item">'. Html::beginForm(['/site/logout']). Html::submitButton('用户退出 (' . Yii::$app->user->identity->username . ')',['class' => 'nav-link btn btn-link logout']). Html::endForm(). '</li>';
+						}
+					?>
+				
+			
+			<!--留言-->
+			
 		</ul>
 		<ul class="navbar-nav ml-auto d-flex align-items-center">
 			<li class="nav-item">

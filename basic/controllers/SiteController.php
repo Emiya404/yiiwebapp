@@ -13,6 +13,8 @@ use app\models\ContactForm;
 use app\models\Post;
 use app\models\User;
 use app\models\Comment;
+use app\models\Likes;
+use app\models\Suggestion;
 
 class SiteController extends Controller
 {
@@ -167,6 +169,28 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionSuggestion(){
+        $this->layout="frontend";
+        $suggest=new Suggestion();
+        if($this->request->isPost){
+            if($suggest->load($this->request->post())){
+                $suggest->suggestion_user=Yii::$app->user->identity->user_id;
+                $suggest->suggestion_time=date('Y-m-d H:i:s');
+                if($suggest->save()){
+                    //reload the comments
+                    return $this->refresh();
+                }else{
+                    Yii::$app->session->setFlash('error', '发送留言失败！');
+                    return $this->refresh();
+                }
+            }
+        }
+
+        $old_suggest=Suggestion::find()->all();
+        return $this->render("suggestion",['old_suggest'=>$old_suggest,'suggest'=>$suggest]);
+    }
+
+
     public function actionPassage(){
         $this->layout="frontend";
         //load the passage from db and find its author
@@ -197,6 +221,11 @@ class SiteController extends Controller
                 }
             }
         }
+        //alloc a new like
+        $like=new Likes();
+        
+        $old_likes=Likes::findAll(['like_post'=>$post_id]);
+        $if_liked=Likes::findOne(['like_post'=>$post_id,'like_user'=>Yii::$app->user->identity->user_id]);
 
         $old_comments=Comment::findAll(['comment_post'=>$post_id]);
         //load old comments for diplaying the comments
@@ -205,6 +234,49 @@ class SiteController extends Controller
             'author'=>$user  , 
             'comment'=>$comment ,
             'old_comments'=>$old_comments,
+            'like'=>$like,
+            'old_likes'=>$old_likes,
+            'if_liked'=>$if_liked
         ]);
     }
+
+    public function actionLike(){
+        $this->layout="frontend";
+
+        //alloc a new comment objection used sending comment
+        $likes= new Likes();
+        if($this->request->isPost){
+            if($likes->load($this->request->post())){
+                $likes->like_user=Yii::$app->user->identity->user_id;
+                $likes->like_time=date('Y-m-d H:i:s');
+                if($likes->save()){
+                    //reload the likes
+                    return $this->redirect(['site/passage','blog_id'=>$likes->like_post]);
+                }else{
+                    Yii::$app->session->setFlash('error', '点赞失败！');
+                    return $this->redirect(['site/passage','blog_id'=>$likes->like_post]);
+                }
+            }
+        }
+    }
+
+    public function actionDislike(){
+        $this->layout="frontend";
+
+        //alloc a new comment objection used sending comment
+        $likes= new Likes();
+        if($this->request->isPost){
+            if($likes->load($this->request->post())){
+                $likes->like_user=Yii::$app->user->identity->user_id;
+                if(Likes::findOne(['like_user'=>$likes->like_user,'like_post'=>$likes->like_post])->delete()){
+                    //reload the likes
+                    return $this->redirect(['site/passage','blog_id'=>$likes->like_post]);
+                }else{
+                    Yii::$app->session->setFlash('error', '取消点赞失败！');
+                    return $this->redirect(['site/passage','blog_id'=>$likes->like_post]);
+                }
+            }
+        }
+    }
+
 }
