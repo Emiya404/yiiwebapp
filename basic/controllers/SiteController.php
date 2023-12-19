@@ -190,6 +190,15 @@ class SiteController extends Controller
         return $this->render("suggestion",['old_suggest'=>$old_suggest,'suggest'=>$suggest]);
     }
 
+    public function actionPwork(){
+        $this->layout="frontend";
+        return $this->render("pwork",[]);
+    }
+
+    public function actionTwork(){
+        $this->layout="frontend";
+        return $this->render("twork",[]);
+    }
 
     public function actionPassage(){
         $this->layout="frontend";

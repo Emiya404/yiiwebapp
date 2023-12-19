@@ -66,7 +66,16 @@ NAVBAR (remove topnav if you don't want changed nav background on scroll)
 			<li class="nav-item">
 				<a class="nav-link" href="?r=site/blog">博客</a>
 			</li>
-		
+			<!--作业menu-->
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					作业展示 
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="?r=site/pwork">个人作业</a>
+					<a class="dropdown-item" href="?r=site/twork">团队作业</a>
+				</div>
+			</li>
 					<?php
 						if(Yii::$app->user->isGuest){
 							echo '<li class="nav-item"> <a class="nav-link" href="index.php?r=site/login">用户登录</a> </li>';
@@ -74,10 +83,6 @@ NAVBAR (remove topnav if you don't want changed nav background on scroll)
 							echo '<li class="nav-item">'. Html::beginForm(['/site/logout']). Html::submitButton('用户退出 (' . Yii::$app->user->identity->username . ')',['class' => 'nav-link btn btn-link logout']). Html::endForm(). '</li>';
 						}
 					?>
-				
-			
-			<!--留言-->
-			
 		</ul>
 		<ul class="navbar-nav ml-auto d-flex align-items-center">
 			<li class="nav-item">
