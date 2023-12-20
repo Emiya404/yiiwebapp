@@ -3,8 +3,8 @@
 use app\models\Post;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
-use yii\grid\GridView;
-/** @var app\models\Post $model*/
+
+/** @var app\models\Post $post*/
 /** @var yii\web\View $this */
 $this->title = "私信列表";
 ?>
@@ -14,18 +14,15 @@ $this->title = "私信列表";
     $form = ActiveForm::begin([
         'id' => 'comment-form',
         'action' => ['userspace/postcreate'],
-        'fieldConfig' => [
-        'template' => "{label}\n{input}\n{error}",
-        'labelOptions' => ['class' => 'col-lg-1 col-form-label mr-lg-3'],
-        'inputOptions' => ['class' => 'col-lg-16 form-control'],
-        'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
-    ],]); 
+        'options' => ['enctype' => 'multipart/form-data']
+        ,]); 
     ?>
-    <?= $form->field($model, 'post_title')->textInput(['autofocus' => true]) ?>
-    <?= $form->field($model, 'post_type')->textInput() ?>
-    <?= $form->field($model, 'post_text',['inputOptions' => [
+    <?= $form->field($post, 'post_title')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($post, 'post_type')->textInput() ?>
+    <?= $form->field($post, 'post_text',['inputOptions' => [
         'style' => 'height: 220px;',
     ]])->textarea() ?>
+    <?=$form->field($post, 'post_image')->fileInput();?>
     <div class="form-group">
         <div>
             <?= Html::submitButton('发送', ['class' => 'btn btn-primary', 'name' => 'comment-button']) ?>

@@ -15,6 +15,7 @@ use app\models\User;
 use app\models\Comment;
 use app\models\Likes;
 use app\models\Suggestion;
+use app\models\Category;
 
 class SiteController extends Controller
 {
@@ -163,9 +164,20 @@ class SiteController extends Controller
 
     public function actionBlog(){
         $this->layout="frontend";
-        $blogposts = Post::find()->all();
+
+        $blog_cate=Yii::$app->request->get("category");
+        if($blog_cate){
+            $blogposts = Post::findAll(['post_type'=>$blog_cate]);
+        }else{
+            $blogposts = Post::find()->all();
+        }
+
+        
+        $categories= Category::find()->all();
+
         return $this->render('blog', [
-            'blogposts' => $blogposts,     
+            'blogposts' => $blogposts,
+            'categories'=> $categories  
         ]);
     }
 
