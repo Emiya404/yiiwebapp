@@ -16,6 +16,8 @@ use app\models\Comment;
 use app\models\Likes;
 use app\models\Suggestion;
 use app\models\Category;
+use app\models\Markrecord;
+use app\models\Bookmark;
 
 class SiteController extends Controller
 {
@@ -214,7 +216,7 @@ class SiteController extends Controller
 
     public function actionPassage(){
         $this->layout="frontend";
-        //load the passage from db and find its author
+        //按照GET访问参数blog_id从数据库加载文章
         $post_id=Yii::$app->request->get("blog_id");
         $blogpost = Post::findOne(["post_id"=>$post_id]);
         if($blogpost==null){
@@ -225,8 +227,7 @@ class SiteController extends Controller
         if($user==null){
             return $this->goHome();
         }
-
-        //alloc a new comment objection used sending comment
+        //传入一个空的评论供view中的新评论填写
         $comment= new Comment();
         if($this->request->isPost){
             if($comment->load($this->request->post())){
@@ -242,14 +243,19 @@ class SiteController extends Controller
                 }
             }
         }
-        //alloc a new like
+        //传入一个空赞供view中点赞，并查看总赞数以及当前用户是否能够点赞
         $like=new Likes();
-        
         $old_likes=Likes::findAll(['like_post'=>$post_id]);
         $if_liked=Likes::findOne(['like_post'=>$post_id,'like_user'=>Yii::$app->user->identity->user_id]);
-
         $old_comments=Comment::findAll(['comment_post'=>$post_id]);
-        //load old comments for diplaying the comments
+        //传入该用户所有的收藏夹，以供用户进行收藏
+        $markr=new Markrecord();
+        $bookmarks=Bookmark::findAll(['mark_user'=>Yii::$app->user->identity->user_id]);
+        $if_marked=Markrecord::find()
+            ->where(['mark_user' => Yii::$app->user->identity->user_id, 'post_id' => $post_id])
+            ->joinWith('bookmark')->all();
+        //var_dump($if_marked);
+        
         return $this->render('passage', [
             'blogpost' => $blogpost,
             'author'=>$user  , 
@@ -257,7 +263,10 @@ class SiteController extends Controller
             'old_comments'=>$old_comments,
             'like'=>$like,
             'old_likes'=>$old_likes,
-            'if_liked'=>$if_liked
+            'if_liked'=>$if_liked,
+            'markr'=>$markr,
+            'old_marks'=>$bookmarks,
+            'if_marked'=>$if_marked
         ]);
     }
 
@@ -295,6 +304,39 @@ class SiteController extends Controller
                 }else{
                     Yii::$app->session->setFlash('error', '取消点赞失败！');
                     return $this->redirect(['site/passage','blog_id'=>$likes->like_post]);
+                }
+            }
+        }
+    }
+
+    public function actionMark(){
+        $this->layout='frontend';
+
+        
+        $mark=new Markrecord();
+        if($this->request->isPost){
+            $allPostKeys = $this->request->post();
+            $keys=array_keys($allPostKeys);
+            //var_dump($keys);
+            //die;
+            
+            foreach ($keys as $key) {
+                if(strpos($key, 'mark-button') === 0){
+                    $extractedString = str_replace('mark-button', '', $key);
+                //echo "提取的字符串：$extractedString <br>";
+                }
+            }
+            //var_dump($extractedString);
+            //die;
+            if($mark->load($this->request->post())){
+                $mark->mark_id=$extractedString;
+                
+                if($mark->save()){
+                    //reload the likes
+                    return $this->redirect(['site/passage','blog_id'=>$mark->post_id]);
+                }else{
+                    Yii::$app->session->setFlash('error', '点赞失败！');
+                    return $this->redirect(['site/passage','blog_id'=>$mark->post_id]);
                 }
             }
         }

@@ -57,4 +57,9 @@ class Bookmark extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['user_id' => 'mark_user']);
     }
+
+    public function getMarkrecord()
+    {
+        return $this->hasMany(Markrecord::class,['mark_id'=>'mark_id']);
+    }
 }

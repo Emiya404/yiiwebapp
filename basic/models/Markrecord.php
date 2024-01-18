@@ -42,4 +42,8 @@ class Markrecord extends \yii\db\ActiveRecord
             'post_id' => 'Post ID',
         ];
     }
+
+    public function getBookmark(){
+        return $this->hasOne(Bookmark::class,['mark_id'=>'mark_id']);
+    }
 }
