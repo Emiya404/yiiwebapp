@@ -15,24 +15,25 @@ $this->title = "私信列表";
     <div class="messages">
         <h2>我发送的消息</h2>
         
-        <?= GridView::widget(['dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => $send_message,]),
+        <?= GridView::widget([
+            'dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => $send_message]),
             'columns' => [
                 'recv_uid',
+                'receiverUsername', // 使用属性名而不是 getter 方法名
                 'msg_time',
                 'msg_text',
             ],
-        ]); 
-        ?>
+        ]); ?>
 
         <h2>我接收的消息</h2>
-        <?= GridView::widget(['dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => $recv_message,]),
+        <?= GridView::widget([
+            'dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => $recv_message]),
             'columns' => [
-                'recv_uid',
+                'senderUsername', // 使用属性名而不是 getter 方法名
                 'msg_time',
                 'msg_text',
             ],
-        ]); 
-        ?>
+        ]); ?>
     </div>
     <h4 class="mb-4 h3">发送私信 ~OVO~</h4>
 	<?php 
@@ -46,7 +47,7 @@ $this->title = "私信列表";
         'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
     ],]); 
     ?>
-    <?= $form->field($model, 'recv_uid')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($model, 'receiver_name')->textInput(['autofocus' => true]) ?>
     <?= $form->field($model, 'msg_text')->textInput() ?>
     <div class="form-group">
         <div>

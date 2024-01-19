@@ -14,9 +14,6 @@ $this->title = "我的收藏";
     <?= GridView::widget(['dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => $bookmarks,]),
         'columns' => [
             'mark_name',
-            [
-                'class' => SelfColumn::className(),
-            ],
         ],
     ]); 
     ?>

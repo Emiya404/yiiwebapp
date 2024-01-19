@@ -54,4 +54,8 @@ class Post extends \yii\db\ActiveRecord
             'post_image' => 'Post Image',
         ];
     }
+
+    public function getUser(){
+        return $this->hasOne(User::class,['user_id'=>'post_author']);
+    }
 }

@@ -196,6 +196,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="/index.php?r=userspace/markrecord" class="nav-link">
+                      收藏记录
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="/index.php?r=userspace/post" class="nav-link">
                       我的文章
                     </a>

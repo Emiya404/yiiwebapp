@@ -135,4 +135,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->password === $password;
     }
+
+    public function getSendmessages(){
+        return $this->hasMany(Message::class,['send_uid'=>'user_id']);
+    }
+    public function getRecvedmessages(){
+        return $this->hasMany(Message::class,['recv_uid'=>'user_id']);
+    }
+
+    
 }

@@ -15,19 +15,14 @@ $this->title = $user->username;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-         'dataProvider' => new \yii\data\ArrayDataProvider([
-            'allModels' => [$user], // 将 User 对象放入数据提供器
-        ]),
+    <?= GridView::widget(['dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => [$user]]),
         'columns' => [
             'username',
             'password',
             //'user_type',
-            [
-                'class' => SelfColumn::className(),
-            ],
         ],
     ]); ?>
+
 
 
 </div>

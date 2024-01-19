@@ -33,6 +33,7 @@ class Message extends \yii\db\ActiveRecord
             [['send_uid', 'recv_uid', 'msg_read'], 'integer'],
             [['msg_time'], 'safe'],
             [['msg_text'], 'string'],
+            ['receiver_name', 'string'],
         ];
     }
 
@@ -49,5 +50,27 @@ class Message extends \yii\db\ActiveRecord
             'msg_read' => 'Msg Read',
             'msg_text' => 'Msg Text',
         ];
+    }
+
+    public $receiver_name;
+
+    public function getSender()
+    {
+        return $this->hasOne(User::class, ['user_id' => 'send_uid']);
+    }
+
+    public function getReceiver()
+    {
+        return $this->hasOne(User::class, ['user_id' => 'recv_uid']);
+    }
+
+    public function getSenderUsername()
+    {
+        return $this->sender->username;
+    }
+
+    public function getReceiverUsername()
+    {
+        return $this->receiver->username;
     }
 }

@@ -50,7 +50,7 @@ class UserspaceController extends Controller{
         if($user===null){
             return $this->redirect(['site/index']);
         }
-        //return all the message sent of recvd by the user
+        
         $send_messages=Message::findAll(["send_uid"=>Yii::$app->user->identity->user_id]);
         $recv_messages=Message::findAll(["recv_uid"=>Yii::$app->user->identity->user_id]);
 
@@ -63,14 +63,17 @@ class UserspaceController extends Controller{
         $message=new Message();
         if($this->request->isPost){
             if($message->load($this->request->post())){
-                $message->send_uid=Yii::$app->user->identity->user_id;
-                $message->msg_time=date('Y-m-d H:i:s');
-                if($message->save()){
-                    return $this->redirect(['userspace/index']);
-                }else{
-                    Yii::$app->session->setFlash('error', '私信发送失败');
-                    return $this->refresh();
+                $text=$message->msg_text;
+                $receivers=User::findAll(['username'=>$message->receiver_name]);
+                foreach($receivers as $receiver){
+                    $message=new Message();
+                    $message->msg_text=$text;
+                    $message->send_uid=Yii::$app->user->identity->user_id;
+                    $message->msg_time=date('Y-m-d H:i:s');
+                    $message->recv_uid=$receiver->user_id;
+                    $message->save();
                 }
+                return $this->redirect(['userspace/index']);
             }
         }
     }
@@ -124,5 +127,41 @@ class UserspaceController extends Controller{
             }
         }
         return $this->render('bookmark',['bookmarks'=>$bookmarks,'model'=>$model]);
+    }
+
+    public function actionMarkrecord(){
+        $this->layout='selfback';
+        $markrecord=new Markrecord();
+        if($this->request->isPost){
+            $allPostKeys = $this->request->post();
+            $keys=array_keys($allPostKeys);
+            
+            foreach ($keys as $key) {
+                if(strpos($key, 'delete-record') === 0){
+                    $parts = explode('-', $key);
+                    $mark_id = $parts[2];
+                    $post_id = $parts[3];
+
+                    if(Markrecord::findOne(['mark_id'=>$mark_id,'post_id'=>$post_id])->delete()){
+                        return $this->redirect(['userspace/markrecord']);
+                    }else{
+                        Yii::$app->session->setFlash('error', '删除记录失败！');
+                        return $this->redirect(['userspace/markrecord']);
+                    }
+                    break;
+                }
+            }
+        }
+
+
+        $bookmarks=Bookmark::findAll(['mark_user'=>Yii::$app->user->identity->user_id]);
+        $result=[];
+        foreach($bookmarks as $bookmark){
+            $result[$bookmark->mark_name]=$bookmark->markrecord;
+            //var_dump($result[$bookmark->mark_name]);
+            //die;
+        }
+        
+        return $this->render('markrecord',['mark_data'=>$result,'empty_record'=>$markrecord]);
     }
 }
