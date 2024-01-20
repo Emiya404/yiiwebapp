@@ -22,7 +22,11 @@ $this->title="Blogs"
             $passage_addr="/index.php/?r=site/passage&blog_id="."$blogpost->post_id";
             $passage_image=$blogpost->post_image?$blogpost->post_image:'frontendassets\img\demo\1.jpg' ;
          
-            $cate_name=$categories[($blogpost->post_type)-1]->category_name;
+            foreach($categories as $cate){
+                if($cate->category_id==$blogpost->post_type){
+                    $cate_name=$cate->category_name;
+                }
+            }
             ?>
             
             <div class="col-lg-6">

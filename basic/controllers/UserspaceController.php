@@ -117,7 +117,7 @@ class UserspaceController extends Controller{
             if($post->load($this->request->post())){
                 $file=UploadedFile::getInstance($post, 'post_image');
                 if($file){
-                    $filePath = 'frontendassets/img/blogimage/' .'blog'.$post->post_id. '.' . $file->extension;
+                    $filePath = 'frontendassets/img/blogimage/' .'blog'.count(Post::find()->all()). '.' . $file->extension;
                     $file->saveAs($filePath);
                     $post->post_image = $filePath;
                 }

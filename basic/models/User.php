@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Suggestion;
 
 /**
  * This is the model class for table "user".
@@ -152,7 +153,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getLikes(){
         return $this->hasMany(Likes::class,['like_user'=>'user_id']);
     }
-
+    public function getSuggestions(){
+        return $this->hasMany(Suggestion::class,['suggestion_user'=>'user_id']);
+    }
     public static function deleteUserWithOther($user_id){
         $user=User::findOne(['user_id'=>$user_id]);
         foreach($user->posts as $post){
@@ -163,6 +166,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         }
         foreach($user->likes as $like){
             Likes::findOne(['like_post'=>$like->like_post,'like_user'=>$like->like_user])->delete();
+        }
+        foreach($user->suggestions as $suggestion){
+            Suggestion::findOne(['suggestion_id'=>$suggestion->suggestion_user])->delete();
         }
         foreach($user->bookmarks as $bookmark){
             foreach($bookmark->markrecord as $markrecord){

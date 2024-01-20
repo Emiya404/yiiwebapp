@@ -29,7 +29,7 @@ CREATE TABLE `bookmark` (
   PRIMARY KEY (`mark_id`),
   KEY `mark_user` (`mark_user`),
   CONSTRAINT `bookmark_ibfk_1` FOREIGN KEY (`mark_user`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `bookmark` (
 
 LOCK TABLES `bookmark` WRITE;
 /*!40000 ALTER TABLE `bookmark` DISABLE KEYS */;
-INSERT INTO `bookmark` VALUES (5,'实施时',1);
+INSERT INTO `bookmark` VALUES (6,'admin的收藏夹',1);
 /*!40000 ALTER TABLE `bookmark` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +53,7 @@ CREATE TABLE `category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(255) NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Technology'),(2,'Science'),(3,'Health'),(4,'Travel');
+INSERT INTO `category` VALUES (5,'新闻动态'),(6,'官方发声'),(7,'网友讨论'),(8,'特别通知');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,7 +80,7 @@ CREATE TABLE `comment` (
   `comment_text` text DEFAULT NULL,
   `comment_time` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +89,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (4,1,1,'评论发送测试','2023-12-09 21:59:59'),(5,1,1,'评论发送测试','2023-12-09 22:00:47'),(6,1,1,'评论发送测试2','2023-12-09 22:04:35'),(7,1,1,'评论发送测试3','2023-12-09 22:09:34'),(8,1,1,'评论发送测试3','2023-12-09 22:10:03'),(10,9,1,'最后的评论啦','2024-01-20 04:37:18'),(11,4,1,'文章删除评论测试','2024-01-20 04:53:12'),(18,17,1,'dfdfsdfdfd','2024-01-20 05:22:57');
+INSERT INTO `comment` VALUES (23,22,1,'加油加油！！！','2024-01-20 06:16:24');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +114,7 @@ CREATE TABLE `likes` (
 
 LOCK TABLES `likes` WRITE;
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
-INSERT INTO `likes` VALUES (17,1,'2024-01-20 05:22:52');
+INSERT INTO `likes` VALUES (22,1,'2024-01-20 06:16:15');
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `markrecord` (
 
 LOCK TABLES `markrecord` WRITE;
 /*!40000 ALTER TABLE `markrecord` DISABLE KEYS */;
-INSERT INTO `markrecord` VALUES (5,17);
+INSERT INTO `markrecord` VALUES (6,22);
 /*!40000 ALTER TABLE `markrecord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +157,7 @@ CREATE TABLE `message` (
   `msg_read` tinyint(1) DEFAULT NULL,
   `msg_text` text DEFAULT NULL,
   PRIMARY KEY (`msg_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +166,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,1,3,'0000-00-00 00:00:00',0,'消息发送测试'),(2,3,1,'0000-00-00 00:00:00',0,'接收私信测试'),(4,1,3,'2023-12-09 03:22:06',NULL,'私信发送测试3'),(5,1,2,'2024-01-19 06:53:04',NULL,'新版私信发送测试'),(6,1,4,'2024-01-19 06:54:22',NULL,'新版私信群发测试'),(7,1,4,'2024-01-19 06:58:49',NULL,'新版私信群发测试2'),(8,1,4,'2024-01-19 07:00:52',NULL,'新版私信群发测试3'),(9,1,2,'2024-01-19 07:03:12',NULL,'新版私信群发测试4'),(10,1,4,'2024-01-19 07:03:12',NULL,'新版私信群发测试4'),(11,1,3,'2024-01-20 05:26:24',NULL,'666');
+INSERT INTO `message` VALUES (12,1,5,'2024-01-20 06:16:48',NULL,'请在新的一年继续加油');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +215,7 @@ CREATE TABLE `post` (
   `post_time` timestamp NOT NULL DEFAULT current_timestamp(),
   `post_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +224,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (17,1,'sdfasdfasdf',1,'asdfasdfasdfsadfasdfasdfasdfasdfkkkkkkkkkkkkkkkkkkkkkkkkkkkk','2024-01-20 05:22:40','frontendassets/img/blogimage/blog.jpeg');
+INSERT INTO `post` VALUES (20,1,'日本核污染水处置应科学、公开、透明、安全',7,'日方应立即停止核污染水排海各项准备，并同周边邻国、国际机构开展充分、有意义的协商，包括寻找排海以外的最佳处置方案，确保核污染水得到科学、公开、透明、安全的处置，并接受严格国际监督\r\n\r\n　　2021年4月13日，日本政府单方面宣布向海洋排放福岛核污染水的决定。两年来，无论是日本国内民众还是国际社会，都对日本政府此举可能带来的影响表示强烈担忧。日本政府出于一己之私，置全球公共利益于不顾，视国际法治为无物，至今仍在顽固推进核污染水排海准备工作，且拒绝正面回应国际社会的关切，在错误道路上越走越远。\r\n\r\n　　2011年3月11日，日本福岛第一核电站发生最高级别核事故，导致三座核反应堆堆芯熔化损毁，放射性物质大量释放。福岛核事故给日本人民带来沉重的灾难，中国等周边国家对事故的发生深表同情，并向日本政府和人民提供了及时的人道主义援助。10多年后，日本政府无视国际社会呼声，选择向人类赖以生存的海洋排放核污染水，将风险转嫁给全人类，这种做法令人心寒。\r\n\r\n　　日本核污染水曾与熔化的堆芯充分接触，含有60多种放射性核素，包括碳—14、碘—129等半衰期极长的核素。日本采用稀释的办法降低核污染水中放射性物质浓度，却不对所有放射性核素进行总量控制。日本声称经过处理的核污染水安全无害，却又不愿应太平洋岛国要求将其排向日本内河或用作农业、工业用水，日方做法无异于自欺欺人。\r\n\r\n　　日本核污染水排海计划是将本国私利凌驾于国际公共利益之上。核污染水排海没有先例。日方理应与各利益攸关方及相关国际组织进行充分协商，确定最安全的处置方案。然而，日本政府单方面宣布将核污染水排海，刻意限制国际原子能机构技术工作组的授权，只允许其评估日方选择的方案，进而宣扬国际原子能机构对日方的方案表示“认可”。很多国家要求日方考虑长期储存核污染水等其他方案，日方出于眼前的经济成本考虑充耳不闻，依然我行我素，极其不负责任，也给其国家形象造成长期负面影响。\r\n\r\n　　日方已囤积130多万吨核污染水，预计排放时间长达30年，整个过程的影响具有极大不确定性。核污染水中含有的很多放射性核素尚无有效处理技术，部分半衰期极长的核素可能随洋流扩散并形成生物富集效应，额外增加环境中的放射性核素总量。日方“多核素去除设备”的可靠性及相关工程的长期有效性问题仍然存疑。日方今年3月发布的数据显示，经该设备处理后的核污染水仍有近70%不达标。核污染水一旦排海，其中的放射性核素将在10年后蔓延至全球海域，影响全球海洋环境及海洋生物。\r\n\r\n　　核污染水排海具有跨国界影响，根据一般国际法和《联合国海洋法公约》等规定，日方有义务采取一切措施避免环境污染，有义务与可能受影响的国家充分协商，有义务评估和监测环境影响，有义务采取预防措施确保危险最小化，有义务保障信息透明，有义务开展国际合作。日方试图找各种借口推卸责任、逃避国际义务，只将排海决定和准备进展向有关国家单方面通报，迄今未全面回应中国和俄罗斯专业技术部门从科学角度对日方排海方案提出的诸多疑问，无法取信于国际社会。\r\n\r\n　　在核污染水处置这一关乎重大国际公共利益的问题上，日方所作所为与国际社会期待相去甚远。日方应立即停止核污染水排海各项准备，并同周边邻国、国际机构开展充分、有意义的协商，包括寻找排海以外的最佳处置方案，确保核污染水得到科学、公开、透明、安全的处置，并接受严格国际监督。','2024-01-20 06:12:21','frontendassets/img/blogimage/blog0.jpg'),(21,5,'第3轮排海将启动！5人意外接触核污水',5,'昨天（10月25日）11时10分左右\r\n\r\n在处理福岛第一核电站\r\n\r\n核污染水放射性物质的过程中\r\n\r\n由于水管脱落，核污染水溅出\r\n\r\n5名工作人员接触到了\r\n\r\n含放射性物质的核污染水\r\n\r\n\r\n福岛核电站工作人员介绍情况\r\n\r\n5人当时都佩戴口罩\r\n\r\n和穿着全身防护服\r\n\r\n但其中2人身体表面的辐射量\r\n\r\n一直没有降低到安全标准值以下\r\n\r\n不得不持续接受擦拭清除处理\r\n\r\n据该发布会消息\r\n\r\n溅出水量约为100毫升\r\n\r\n当地时间8月24日\r\n\r\n福岛第一核电站的核污染水排放至太平洋\r\n\r\n据日本放送协会（NHK）报道，日本东京电力公司称，福岛核电站第二批核污染水排放从10月5日开始，已于10月23日排放完毕，共排放约7810吨核污染水。截至目前，已有超1.5万吨核污染水流入海洋。\r\n\r\n报道称，在排放过程中，输送核污染水的过滤器附着了类似锈斑的物体，导致水泵压力一度降低，在对过滤器进行清理后恢复原状，未对排放造成影响。','2024-01-20 06:13:56','frontendassets/img/blogimage/blog1.jpg'),(22,1,'建站伊始',8,'终于换新了自己的博客建站，在新的时光里，我会加油更新自己的知识，也会不断翻新之前存在错误的博客。\r\n站里现有的博客文章都是之前自己原创的，借鉴的时候请拜托写上引用，不排除有一些结论是匆匆得出的暴论，但是那又跟小白有什么关系呢（笑）。','2024-01-20 06:16:07','frontendassets/img/blogimage/blog2.jpg');
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +275,6 @@ CREATE TABLE `suggestion` (
 
 LOCK TABLES `suggestion` WRITE;
 /*!40000 ALTER TABLE `suggestion` DISABLE KEYS */;
-INSERT INTO `suggestion` VALUES (1,1,'万泽生柯哀捏','2023-12-18 03:07:22'),(2,1,'这是一条留言','2024-01-20 00:45:37'),(3,3,'我也要来留言','2024-01-20 00:46:11');
 /*!40000 ALTER TABLE `suggestion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +293,7 @@ CREATE TABLE `user` (
   `accessToken` varchar(255) NOT NULL,
   `user_type` enum('admin','guest') NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +302,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'user1','password1','authKey1','accessToken1','admin'),(2,'user2','password2','authKey2','accessToken2','guest');
+INSERT INTO `user` VALUES (1,'admin','admin','authKey1','accessToken1','admin'),(5,'guest1','guest1','AUTH1','ACCE1','guest');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -316,4 +315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-20 20:36:57
+-- Dump completed on 2024-01-20 21:18:10
