@@ -14,6 +14,16 @@ $this->title = "我的文章";
             'post_type',
             'post_time',
             "post_text",
+            [
+                'label'=>'delete post',
+                'format'=>'raw',
+                'value'=> function($model){
+                    return  Html::a('删除文章', ['userspace/deletepost'], [
+                        'class'=>'btn btn-outline-danger w-100',
+                        'data'=>['method'=>'post','params'=>['post_id'=>$model->post_id,],] 
+                    ]);
+                }
+            ]
         ],
     ]); 
     ?>

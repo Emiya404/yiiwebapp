@@ -18,6 +18,8 @@ use app\models\Suggestion;
 use app\models\Category;
 use app\models\Markrecord;
 use app\models\Bookmark;
+use app\models\Pollution;
+use app\models\Region;
 
 class SiteController extends Controller
 {
@@ -71,30 +73,19 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $this->layout="frontend";
-        $comment = Comment::find()->all();
-        $model=new Comment();
 
-        if(Yii::$app->request->isPost){
-            if(Yii::$app->user->isGuest){
-                Yii::$app->session->setFlash('error', '请先登录');
-                return $this->refresh();
+        $regions=Region::find()->all();
+        $result=[];
+        foreach($regions as $region){
+            $pollutions=$region->pollutions;
+            if(count($pollutions)>0){
+                $result[$region->region_code]=$pollutions[0]->pollution_src;
             }
             
-            if($model->load(Yii::$app->request->post())){
-            $model->comment_user=Yii::$app->user->identity->user_id;
-            $model->comment_time=date('Y-m-d H:i:s');
-                if($model->save()){
-                    return $this->redirect(['site/index']);
-                }else{
-                    Yii::$app->session->setFlash('error', '发送评论保存数据失败！');
-                    return $this->refresh();
-                }
-            }
         }
 
         return $this->render('index', [
-            'comments' => $comment,
-            'model' => $model
+            'pollution_data'=>$result
         ]);
     }
 

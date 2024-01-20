@@ -121,7 +121,7 @@ class UserspaceController extends Controller{
                 if($model->save()){
                     return $this->redirect(['userspace/index']);
                 }else {
-                    Yii::$app->session->setFlash('error', '文章发表失败');
+                    Yii::$app->session->setFlash('error', '创建收藏夹失败');
                     return $this->refresh();
                 }
             }
@@ -163,5 +163,38 @@ class UserspaceController extends Controller{
         }
         
         return $this->render('markrecord',['mark_data'=>$result,'empty_record'=>$markrecord]);
+    }
+
+    public function actionDeletebookmark(){
+        $this->layout='selfback';
+        $bookmark=new Bookmark();
+        if($this->request->isPost){
+            $post_data = $this->request->post();
+            if(array_key_exists('mark_id',$post_data)){
+                //先删除markrecord
+                $markrecords=Markrecord::findAll(['mark_id'=>$post_data['mark_id']]);
+              
+                foreach($markrecords as $markrecord){
+                    Markrecord::findOne(['mark_id'=>$markrecord->mark_id,'post_id'=>$markrecord->post_id])->delete();
+                }
+                //再删除bookmark
+                Bookmark::findOne(['mark_id'=>$post_data['mark_id']])->delete();
+                return $this->redirect(['userspace/bookmark']);
+            }
+        }
+        return $this->redirect(['userspace/bookmark']);
+    }
+
+    public function actionDeletepost(){
+        $this->layout='selfback';
+        
+        $post=new Post();
+        if($this->request->isPost){
+            $post_data = $this->request->post();
+            if(array_key_exists('post_id',$post_data)){
+                Post::findOne(['post_id'=>$post_data['post_id']])->delete();
+            }
+        }
+        return $this->redirect(['userspace/post']);
     }
 }

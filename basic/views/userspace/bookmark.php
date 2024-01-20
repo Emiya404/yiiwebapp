@@ -14,6 +14,16 @@ $this->title = "我的收藏";
     <?= GridView::widget(['dataProvider' => new \yii\data\ArrayDataProvider(['allModels' => $bookmarks,]),
         'columns' => [
             'mark_name',
+            [
+                'label'=>'delete bookmark',
+                'format'=>'raw',
+                'value'=> function($model){
+                    return  Html::a('删除收藏夹', ['userspace/deletebookmark'], [
+                        'class'=>'btn btn-outline-danger w-100',
+                        'data'=>['method'=>'post','params'=>['mark_id'=>$model->mark_id,],] 
+                    ]);
+                }
+            ]
         ],
     ]); 
     ?>
