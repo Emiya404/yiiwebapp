@@ -143,5 +143,34 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasMany(Message::class,['recv_uid'=>'user_id']);
     }
 
-    
+    public function getPosts(){
+        return $this->hasMany(Post::class,['post_author'=>'user_id']);
+    }
+    public function getComments(){
+        return $this->hasMany(Comment::class,['comment_user'=>'user_id']);
+    }
+    public function getLikes(){
+        return $this->hasMany(Likes::class,['like_user'=>'user_id']);
+    }
+
+    public static function deleteUserWithOther($user_id){
+        $user=User::findOne(['user_id'=>$user_id]);
+        foreach($user->posts as $post){
+            Post::deletePoatWithOther($post->post_id);
+        }
+        foreach($user->comments as $comment){
+            Comment::findOne(['comment_id'=>$comment->comment_id])->delete();
+        }
+        foreach($user->likes as $like){
+            Likes::findOne(['like_post'=>$like->like_post,'like_user'=>$like->like_user])->delete();
+        }
+        foreach($user->bookmarks as $bookmark){
+            foreach($bookmark->markrecord as $markrecord){
+                Markrecord::findOne(['mark_id'=>$markrecord->mark_id,'post_id'=>$markrecord->post_id])->delete();
+            }
+            Bookmark::findOne(['mark_id'=>$bookmark->mark_id])->delete();
+        }
+        User::findOne(['user_id'=>$user_id])->delete();
+        return;
+    }
 }

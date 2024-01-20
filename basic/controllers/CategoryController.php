@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Category;
 use app\models\CategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\User;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -30,7 +32,16 @@ class CategoryController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Category models.
      *
@@ -38,6 +49,9 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +70,9 @@ class CategoryController extends Controller
      */
     public function actionView($category_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($category_id),
@@ -69,6 +86,9 @@ class CategoryController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Category();
 
@@ -94,6 +114,9 @@ class CategoryController extends Controller
      */
     public function actionUpdate($category_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($category_id);
 
@@ -115,6 +138,9 @@ class CategoryController extends Controller
      */
     public function actionDelete($category_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $this->findModel($category_id)->delete();
 

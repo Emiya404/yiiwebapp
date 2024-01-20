@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Bookmark;
 use app\models\BookmarkSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\User;
 
 /**
  * BookmarkController implements the CRUD actions for Bookmark model.
@@ -30,7 +32,16 @@ class BookmarkController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Bookmark models.
      *
@@ -38,6 +49,9 @@ class BookmarkController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new BookmarkSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +70,9 @@ class BookmarkController extends Controller
      */
     public function actionView($mark_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($mark_id),
@@ -69,6 +86,9 @@ class BookmarkController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Bookmark();
 
@@ -94,6 +114,9 @@ class BookmarkController extends Controller
      */
     public function actionUpdate($mark_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($mark_id);
 
@@ -115,6 +138,9 @@ class BookmarkController extends Controller
      */
     public function actionDelete($mark_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $this->findModel($mark_id)->delete();
 

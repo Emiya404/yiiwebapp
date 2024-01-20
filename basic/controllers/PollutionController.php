@@ -7,7 +7,8 @@ use app\models\PollutionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\User;
+use Yii;
 /**
  * PollutionController implements the CRUD actions for Pollution model.
  */
@@ -36,8 +37,21 @@ class PollutionController extends Controller
      *
      * @return string
      */
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new PollutionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +70,9 @@ class PollutionController extends Controller
      */
     public function actionView($pollution_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($pollution_id),
@@ -69,6 +86,9 @@ class PollutionController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Pollution();
 
@@ -94,6 +114,9 @@ class PollutionController extends Controller
      */
     public function actionUpdate($pollution_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($pollution_id);
 
@@ -115,6 +138,9 @@ class PollutionController extends Controller
      */
     public function actionDelete($pollution_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $this->findModel($pollution_id)->delete();
 

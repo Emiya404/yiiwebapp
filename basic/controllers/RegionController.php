@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\Pollution;
 use app\models\Region;
 use app\models\RegionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\User;
+use Yii;
 /**
  * RegionController implements the CRUD actions for Region model.
  */
@@ -31,6 +33,16 @@ class RegionController extends Controller
         );
     }
 
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Region models.
      *
@@ -38,6 +50,9 @@ class RegionController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new RegionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +71,9 @@ class RegionController extends Controller
      */
     public function actionView($region_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($region_id),
@@ -69,6 +87,9 @@ class RegionController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Region();
 
@@ -94,6 +115,9 @@ class RegionController extends Controller
      */
     public function actionUpdate($region_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($region_id);
 
@@ -115,9 +139,15 @@ class RegionController extends Controller
      */
     public function actionDelete($region_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
-        $this->findModel($region_id)->delete();
-
+        $region=Region::findOne(['region_id'=>$region_id]);
+        foreach($region->pollutions as $pollution){
+            Pollution::findOne(['pollution_id'=>$pollution->pollution_id])->delete();
+        }
+        $region->delete();
         return $this->redirect(['index']);
     }
 
@@ -130,6 +160,7 @@ class RegionController extends Controller
      */
     protected function findModel($region_id)
     {
+        
         if (($model = Region::findOne(['region_id' => $region_id])) !== null) {
             return $model;
         }

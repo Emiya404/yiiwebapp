@@ -58,7 +58,7 @@ NAVBAR (remove topnav if you don't want changed nav background on scroll)
 	<div class="navbar-collapse collapse" id="navbarColor02" style="">
 		<ul class="navbar-nav mr-auto d-flex align-items-center">
 			<li class="nav-item">
-				<a class="nav-link" href="./index.html">团队介绍</a>
+				<a class="nav-link" href="/index.php">团队介绍</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="?r=site/suggestion">留言</a>

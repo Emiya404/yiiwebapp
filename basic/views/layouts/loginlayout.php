@@ -59,20 +59,7 @@ NAVBAR
 	<div class="navbar-collapse collapse" id="navbarColor02" style="">
 		<ul class="navbar-nav mr-auto d-flex align-items-center">
 			<li class="nav-item">
-			<a class="nav-link" href="./index.html">Intro</a>
-			</li>
-			<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Examples </a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="./landing.html">Home Landing</a>
-				<a class="dropdown-item" href="./login.html">User Login</a>
-				<a class="dropdown-item" href="./blog.html">Blog Index</a>
-				<a class="dropdown-item" href="./page.html">Sample Page</a>
-			</div>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="./docs.html">Docs</a>
+			<a class="nav-link" href="/index.php">首页</a>
 			</li>
 		</ul>
 	</div>

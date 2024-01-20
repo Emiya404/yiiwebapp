@@ -58,4 +58,29 @@ class Post extends \yii\db\ActiveRecord
     public function getUser(){
         return $this->hasOne(User::class,['user_id'=>'post_author']);
     }
+
+    public function getComments(){
+        return $this->hasMany(Comment::class,['comment_post'=>'post_id']);
+    }
+    public function getLikes(){
+        return $this->hasMany(Likes::class,['like_post'=>'post_id']);
+    }
+    public function getMarkrecords(){
+        return $this->hasMany(Markrecord::class,['post_id'=>'post_id']);
+    }
+
+    public static function deletePoatWithOther($post_id){
+        $post=Post::findOne(['post_id'=>$post_id]);
+        if(Post::findOne(['post_id'=>$post_id])->delete()){
+            foreach($post->comments as $comment){
+                Comment::findOne(['comment_id'=>$comment->comment_id])->delete();
+            }
+            foreach($post->likes as $like){
+                Likes::findOne(['like_post'=>$like->like_post,'like_user'=>$like->like_user])->delete();
+            }
+            foreach($post->markrecords as $markrecord){
+                Markrecord::findOne(['mark_id'=>$markrecord->mark_id,'post_id'=>$markrecord->post_id])->delete();
+            }
+        }
+    }
 }

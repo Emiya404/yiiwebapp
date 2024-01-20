@@ -7,7 +7,8 @@ use app\models\MessageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\User;
+use Yii;
 /**
  * MessageController implements the CRUD actions for Message model.
  */
@@ -30,7 +31,16 @@ class MessageController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Message models.
      *
@@ -38,6 +48,9 @@ class MessageController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new MessageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +69,9 @@ class MessageController extends Controller
      */
     public function actionView($msg_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($msg_id),
@@ -69,6 +85,9 @@ class MessageController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Message();
 
@@ -94,6 +113,9 @@ class MessageController extends Controller
      */
     public function actionUpdate($msg_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($msg_id);
 
@@ -115,6 +137,9 @@ class MessageController extends Controller
      */
     public function actionDelete($msg_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $this->findModel($msg_id)->delete();
 

@@ -7,7 +7,8 @@ use app\models\LikesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
+use app\models\User;
 /**
  * LikesController implements the CRUD actions for Likes model.
  */
@@ -30,7 +31,16 @@ class LikesController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Likes models.
      *
@@ -38,6 +48,9 @@ class LikesController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new LikesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -57,6 +70,9 @@ class LikesController extends Controller
      */
     public function actionView($like_post, $like_user)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($like_post, $like_user),
@@ -70,6 +86,9 @@ class LikesController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Likes();
 
@@ -96,6 +115,9 @@ class LikesController extends Controller
      */
     public function actionUpdate($like_post, $like_user)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($like_post, $like_user);
 
@@ -118,6 +140,9 @@ class LikesController extends Controller
      */
     public function actionDelete($like_post, $like_user)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $this->findModel($like_post, $like_user)->delete();
 

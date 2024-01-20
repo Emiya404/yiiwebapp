@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use Yii;
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -30,7 +31,16 @@ class UserController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all User models.
      *
@@ -38,6 +48,9 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +69,9 @@ class UserController extends Controller
      */
     public function actionView($user_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($user_id),
@@ -69,6 +85,9 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new User();
 
@@ -94,6 +113,9 @@ class UserController extends Controller
      */
     public function actionUpdate($user_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($user_id);
 
@@ -115,9 +137,12 @@ class UserController extends Controller
      */
     public function actionDelete($user_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
-        $this->findModel($user_id)->delete();
-
+        User::deleteUserWithOther($user_id);
+        //User::findOne(['user_id'=>$user_id])->delete();
         return $this->redirect(['index']);
     }
 

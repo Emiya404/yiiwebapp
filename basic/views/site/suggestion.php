@@ -14,6 +14,7 @@ $this->title="留言建议";
 		<div class="col-md-8">
 
 			<?= Html::encode("发送一条友善的评论") ?>
+			
 			<?php 
 				$form = ActiveForm::begin([
     				'id' => 'suggestion-form',
@@ -24,7 +25,8 @@ $this->title="留言建议";
     				'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
 				],]); 
 			?>
-			<?= $form->field($suggest, 'suggestion_text')->textarea(['autofocus' => true]) ?>
+			</br>
+			<?= $form->field($suggest, 'suggestion_text')->textarea(['autofocus' => true])->label(false) ?>
 			<div class="form-group">
     			<div>
         			<?= Html::submitButton('发送', ['class' => 'btn btn-primary', 'name' => 'comment-button']) ?>

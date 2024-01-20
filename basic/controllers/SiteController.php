@@ -64,7 +64,13 @@ class SiteController extends Controller
             ],
         ];
     }
-
+    public static function checkuser(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        return true;
+    }
     /**
      * Displays homepage.
      *
@@ -175,6 +181,9 @@ class SiteController extends Controller
     }
 
     public function actionSuggestion(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="frontend";
         $suggest=new Suggestion();
         if($this->request->isPost){
@@ -206,6 +215,9 @@ class SiteController extends Controller
     }
 
     public function actionPassage(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="frontend";
         //按照GET访问参数blog_id从数据库加载文章
         $post_id=Yii::$app->request->get("blog_id");
@@ -262,6 +274,9 @@ class SiteController extends Controller
     }
 
     public function actionLike(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="frontend";
 
         //alloc a new comment objection used sending comment
@@ -282,6 +297,9 @@ class SiteController extends Controller
     }
 
     public function actionDislike(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="frontend";
 
         //alloc a new comment objection used sending comment
@@ -301,6 +319,9 @@ class SiteController extends Controller
     }
 
     public function actionMark(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout='frontend';
 
         
@@ -326,11 +347,11 @@ class SiteController extends Controller
                     //reload the likes
                     return $this->redirect(['site/passage','blog_id'=>$mark->post_id]);
                 }else{
-                    Yii::$app->session->setFlash('error', '点赞失败！');
+                    Yii::$app->session->setFlash('error', '收藏失败！');
                     return $this->redirect(['site/passage','blog_id'=>$mark->post_id]);
                 }
             }
         }
     }
-
+    
 }

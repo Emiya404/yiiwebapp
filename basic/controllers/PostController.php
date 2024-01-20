@@ -7,7 +7,11 @@ use app\models\PostSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\User;
+use app\models\Likes;
+use app\models\Comment;
+use app\models\Markrecord;
+use Yii;
 /**
  * PostController implements the CRUD actions for Post model.
  */
@@ -30,7 +34,16 @@ class PostController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Post models.
      *
@@ -38,6 +51,9 @@ class PostController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +72,9 @@ class PostController extends Controller
      */
     public function actionView($post_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($post_id),
@@ -69,6 +88,9 @@ class PostController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Post();
 
@@ -94,6 +116,9 @@ class PostController extends Controller
      */
     public function actionUpdate($post_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($post_id);
 
@@ -115,8 +140,12 @@ class PostController extends Controller
      */
     public function actionDelete($post_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
-        $this->findModel($post_id)->delete();
+        $post=$this->findModel($post_id);
+        Post::deletePoatWithOther($post_id);
 
         return $this->redirect(['index']);
     }

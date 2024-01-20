@@ -7,7 +7,8 @@ use app\models\CommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
+use app\models\User;
 /**
  * CommentController implements the CRUD actions for Comment model.
  */
@@ -30,7 +31,16 @@ class CommentController extends Controller
             ]
         );
     }
-
+    public function checkadmin(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        if($user->user_type==="admin"){
+            return true;
+        }
+        return false;
+    }
     /**
      * Lists all Comment models.
      *
@@ -38,6 +48,9 @@ class CommentController extends Controller
      */
     public function actionIndex()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $searchModel = new CommentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +69,9 @@ class CommentController extends Controller
      */
     public function actionView($comment_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         return $this->render('view', [
             'model' => $this->findModel($comment_id),
@@ -69,6 +85,9 @@ class CommentController extends Controller
      */
     public function actionCreate()
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = new Comment();
 
@@ -94,6 +113,9 @@ class CommentController extends Controller
      */
     public function actionUpdate($comment_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $model = $this->findModel($comment_id);
 
@@ -115,6 +137,9 @@ class CommentController extends Controller
      */
     public function actionDelete($comment_id)
     {
+        if($this->checkadmin()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="backend";
         $this->findModel($comment_id)->delete();
 

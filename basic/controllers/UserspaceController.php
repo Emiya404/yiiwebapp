@@ -11,6 +11,8 @@ use app\models\Post;
 use app\models\Message;
 use app\models\Bookmark;
 use app\models\Markrecord;
+use app\models\Comment;
+use app\models\Likes;
 use yii\web\UploadedFile;
 
 class UserspaceController extends Controller{
@@ -31,8 +33,18 @@ class UserspaceController extends Controller{
             ],
         ];
     }
+    public static function checkuser(){
+        if(Yii::$app->user->identity==null){
+            return false;
+        }
+        $user=User::findOne(['user_id'=>Yii::$app->user->identity->user_id]);
+        return true;
+    }
     //展示用户的id和用户名信息
     public function actionIndex(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="selfback";
         
         //return the user message
@@ -44,6 +56,9 @@ class UserspaceController extends Controller{
     }
     //展示用户收到或者发出的私信
     public function actionMessage(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout="selfback";
         
         $user=User::findOne(["user_id"=>Yii::$app->user->identity->user_id]);
@@ -59,6 +74,9 @@ class UserspaceController extends Controller{
     }
     //发送私信功能
     public function actionMessagecreate(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout= 'selfback';
         $message=new Message();
         if($this->request->isPost){
@@ -79,6 +97,9 @@ class UserspaceController extends Controller{
     }
     //展示用户的文章
     public function actionPost(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout= 'selfback';
         $posts=Post::findAll(['post_author'=>Yii::$app->user->identity->user_id]);
         return $this->render('post',['posts'=>$posts]);
@@ -86,6 +107,9 @@ class UserspaceController extends Controller{
 
     //用户发布文章
     public function actionPostcreate(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout= 'selfback';
         $post=new Post();
 
@@ -112,6 +136,9 @@ class UserspaceController extends Controller{
 
     //用户添加收藏夹
     public function actionBookmark(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout= 'selfback';
         $bookmarks=Bookmark::findAll(['mark_user'=>Yii::$app->user->identity->user_id]);
         $model=new Bookmark();
@@ -130,6 +157,9 @@ class UserspaceController extends Controller{
     }
 
     public function actionMarkrecord(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout='selfback';
         $markrecord=new Markrecord();
         if($this->request->isPost){
@@ -164,16 +194,24 @@ class UserspaceController extends Controller{
         
         return $this->render('markrecord',['mark_data'=>$result,'empty_record'=>$markrecord]);
     }
-
+    
     public function actionDeletebookmark(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout='selfback';
         $bookmark=new Bookmark();
         if($this->request->isPost){
             $post_data = $this->request->post();
             if(array_key_exists('mark_id',$post_data)){
+                //确认要删除的收藏夹是用户本人的
+                $bookmark=Markrecord::find(['mark_id'=>$post_data['mark_id']])->one();
+                if($bookmark==null || $bookmark->mark_user!=Yii::$app->user->identity->user_id){
+                    $this->redirect(['userspace/bookmark']);
+                }
                 //先删除markrecord
                 $markrecords=Markrecord::findAll(['mark_id'=>$post_data['mark_id']]);
-              
+                
                 foreach($markrecords as $markrecord){
                     Markrecord::findOne(['mark_id'=>$markrecord->mark_id,'post_id'=>$markrecord->post_id])->delete();
                 }
@@ -186,15 +224,26 @@ class UserspaceController extends Controller{
     }
 
     public function actionDeletepost(){
+        if($this->checkuser()===false){
+            return $this->redirect(['site/login']);
+        }
         $this->layout='selfback';
         
         $post=new Post();
         if($this->request->isPost){
             $post_data = $this->request->post();
-            if(array_key_exists('post_id',$post_data)){
-                Post::findOne(['post_id'=>$post_data['post_id']])->delete();
+            $post=Post::find(['post_id'=>$post_data['post_id']])->one();
+                if($post==null || $post->post_author!=Yii::$app->user->identity->user_id){
+                    $this->redirect(['userspace/post']);
             }
+            if(array_key_exists('post_id',$post_data)){
+                Post::deletePoatWithOther($post_data['post_id']);
+            }
+            //删除有关的评论，点赞，收藏记录
+            
         }
         return $this->redirect(['userspace/post']);
     }
+
+    
 }
