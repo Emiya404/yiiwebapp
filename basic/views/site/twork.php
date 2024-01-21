@@ -39,7 +39,7 @@ TABLE
 		 p1
 	</th>
 	<th>
-        <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+        <a href=".\homework\team\汪汪队_需求文档(2014081_2011064_2011839).pdf" class="btn btn-primary btn-round">
             <i class="fas fa-cloud-download-alt mr-1"></i> 
             下载
          </a>
@@ -56,7 +56,7 @@ TABLE
 		 p1
 	</th>
 	<th>
-        <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+        <a href=".\homework\team\汪汪队_设计文档(2014081_2011064_2011839).pdf" class="btn btn-primary btn-round">
             <i class="fas fa-cloud-download-alt mr-1"></i> 
             下载
          </a>
@@ -73,7 +73,7 @@ TABLE
 		 p1
 	</th>
 	<th>
-        <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+        <a href=".\homework\team\汪汪队_实现文档(2014081_2011064_2011839).pdf" class="btn btn-primary btn-round">
             <i class="fas fa-cloud-download-alt mr-1"></i> 
             下载
          </a>
@@ -90,7 +90,7 @@ TABLE
 		 p1
 	</th>
 	<th>
-        <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+        <a href=".\homework\team\汪汪队_用户手册(2014081_2011064_2011839).pdf" class="btn btn-primary btn-round">
             <i class="fas fa-cloud-download-alt mr-1"></i> 
             下载
          </a>
@@ -107,7 +107,7 @@ TABLE
 		 p1
 	</th>
 	<th>
-        <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+        <a href=".\homework\team\汪汪队_部署文档(2014081_2011064_2011839).pdf" class="btn btn-primary btn-round">
             <i class="fas fa-cloud-download-alt mr-1"></i> 
             下载
          </a>
@@ -124,7 +124,7 @@ TABLE
 		 p1
 	</th>
 	<th>
-        <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+        <a href=".\homework\team\汪汪队_项目展示(2014081_2011064_2011839).pptx" class="btn btn-primary btn-round">
             <i class="fas fa-cloud-download-alt mr-1"></i> 
             下载
          </a>

@@ -171,7 +171,10 @@ class UserspaceController extends Controller{
                     $parts = explode('-', $key);
                     $mark_id = $parts[2];
                     $post_id = $parts[3];
-
+                    $bookmark=Markrecord::find(['mark_id'=>$mark_id])->one();
+                    if($bookmark==null || $bookmark->mark_user!=Yii::$app->user->identity->user_id){
+                        $this->redirect(['userspace/markrecord']);
+                    }
                     if(Markrecord::findOne(['mark_id'=>$mark_id,'post_id'=>$post_id])->delete()){
                         return $this->redirect(['userspace/markrecord']);
                     }else{
@@ -233,8 +236,8 @@ class UserspaceController extends Controller{
         if($this->request->isPost){
             $post_data = $this->request->post();
             $post=Post::find(['post_id'=>$post_data['post_id']])->one();
-                if($post==null || $post->post_author!=Yii::$app->user->identity->user_id){
-                    $this->redirect(['userspace/post']);
+            if($post==null || $post->post_author!=Yii::$app->user->identity->user_id){
+                $this->redirect(['userspace/post']);
             }
             if(array_key_exists('post_id',$post_data)){
                 Post::deletePoatWithOther($post_data['post_id']);

@@ -17,9 +17,9 @@ $this->title="个人作业";
 			<ul class="list-unstyled mt-3 mb-4">
 				<li>学号：2011064</li>
 				<li>专业：信息安全、法学</li>
-				<li>git链接：</li>
+				<li>git链接：<a href="https://github.com/Emiya404/yiiwebapp">yiiwebapp</a></li>
 			</ul>
-			    <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+			    <a href=".\homework\personal\作业(2011064_黄韵竹).zip" class="btn btn-primary btn-round">
                     <i class="fas fa-cloud-download-alt mr-1"></i> 
                     下载
                 </a>
@@ -35,9 +35,9 @@ $this->title="个人作业";
 			<ul class="list-unstyled mt-3 mb-4">
 				<li>学号：2014081</li>
 				<li>专业：信息安全、法学</li>
-				<li>git链接：</li>
+				<li>git链接：<a href="https://github.com/Emiya404/yiiwebapp">yiiwebapp</a></li>
 			</ul>
-                <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+                <a href=".\homework\personal\作业(2014081_万泽生).zip" class="btn btn-primary btn-round">
                 <i class="fas fa-cloud-download-alt mr-1"></i>
                     下载
                 </a>
@@ -52,9 +52,9 @@ $this->title="个人作业";
 			<ul class="list-unstyled mt-3 mb-4">
                 <li>学号：2011839</li>
 				<li>专业：信息安全、法学</li>
-				<li>git链接：</li>
+				<li>git链接：<a href="https://github.com/Emiya404/yiiwebapp">yiiwebapp</a></li>
 			</ul>
-                 <a href=".\homework\homework.zip" class="btn btn-primary btn-round">
+                 <a href=".\homework\personal\作业(2011839_刘扬).zip" class="btn btn-primary btn-round">
                  <i class="fas fa-cloud-download-alt mr-1"></i>   
                     下载
                 </a>
