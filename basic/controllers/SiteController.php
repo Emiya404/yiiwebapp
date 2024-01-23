@@ -354,4 +354,8 @@ class SiteController extends Controller
         }
     }
     
+    public function actionTeam(){
+        $this->layout="frontend";
+        return $this->render("team",[]);
+    }
 }
